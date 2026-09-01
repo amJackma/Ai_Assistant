@@ -1,0 +1,31 @@
+name: Deploy to Render
+
+on:
+  push:
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Build and deploy to Render
+        run: |
+          echo "Deployment triggered for master branch"
+          echo "Visit your Render dashboard to see build status:"
+          echo "https://dashboard.render.com"
+        env:
+          RENDER_DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
+
+      # Optional: Trigger Render deployment via webhook
+      - name: Trigger Render Deploy Hook
+        if: always()
+        run: |
+          if [ -n "${{ secrets.RENDER_DEPLOY_HOOK }}" ]; then
+            curl "${{ secrets.RENDER_DEPLOY_HOOK }}"
+          else
+            echo "RENDER_DEPLOY_HOOK not configured. Enable auto-deploy in Render dashboard."
+          fi
