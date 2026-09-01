@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: interview-assistant
+    runtime: node
+    buildCommand: npm install && npm run build
+    startCommand: node dist-electron/server.js
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 3000
+      - key: OPENAI_API_KEY
+        sync: false
+      - key: OPENAI_FAST_ANSWER_MODEL
+        value: gpt-5.6-luna
+      - key: OPENAI_CODING_MODEL
+        value: gpt-5.6-sol
+      - key: OPENAI_FAST_REASONING_EFFORT
+        value: low
+      - key: OPENAI_CODING_REASONING_EFFORT
+        value: high
